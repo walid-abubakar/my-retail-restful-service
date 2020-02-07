@@ -7,15 +7,10 @@ import com.target.myretail.app.domain.ResponseVM
 import com.target.myretail.app.repository.ProductRepo
 import org.springframework.stereotype.Service
 import javax.ws.rs.WebApplicationException
-import javax.ws.rs.client.Client
 
 
 @Service
 class ProductService(val productRepo: ProductRepo) {
-
-    private val baseUrl = "http://redsky.target.com/v2/pdp/tcin/";
-    private val exclude = "taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics"
-    private val client: Client? = null
     private val redSkyService: RedSkyService = RedSkyService( ObjectMapper())
     fun findAll(): Collection<CurrentPrice> {
         return productRepo.findAll()
@@ -29,7 +24,6 @@ class ProductService(val productRepo: ProductRepo) {
         } else {
             throw Exception("Product Not Found")
         }
-
     }
 
     fun updateProductById(id: String, product: Product): Product {
@@ -49,9 +43,6 @@ class ProductService(val productRepo: ProductRepo) {
 
     fun insertProductPrice(id: Long, currentPrice: CurrentPrice): Product {
         val name = redSkyService.getProductName(id.toString())
-        currentPrice.id = id
-        currentPrice.currency_code = currentPrice.currency_code
-        currentPrice.value = currentPrice.value
         val response = productRepo.save(CurrentPrice(
                 id = id,
                 value = currentPrice.value,

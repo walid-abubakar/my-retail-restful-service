@@ -21,7 +21,6 @@ class ProductResource(private val productService: ProductService) {
     @GetMapping("/{Id}")
     fun getProduct(@PathVariable("Id") Id: String): Product {
         val product = productService.findOne(Id)
-        println(product)
         return product
     }
 
@@ -36,7 +35,6 @@ class ProductResource(private val productService: ProductService) {
 
     @PostMapping
     fun postProductPrice(@RequestBody @Valid currentPrice: CurrentPrice): ResponseEntity<HttpStatus> {
-            println(currentPrice)
             val result = productService.insertProductPrice(currentPrice.id.toLong(), currentPrice)
             val uri = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")

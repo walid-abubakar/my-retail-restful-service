@@ -11,7 +11,6 @@ class RedSkyService(private val mapper: ObjectMapper) {
         val restTemplate = RestTemplate()
         val response = restTemplate.getForEntity("$baseUrl/$id$exclude", String::class.java)
         val root = mapper.readTree(response.body)
-        val name = root.at("/product/item/product_description/title").asText()
-        return name
+        return root.at("/product/item/product_description/title").asText()
     }
 }
